@@ -1,4 +1,5 @@
 import { ConflictException, Injectable } from '@nestjs/common';
+import { User } from 'generated/prisma';
 import { PrismaClientKnownRequestError } from 'generated/prisma/runtime/library';
 import { PrismaService } from 'src/database/prisma.service';
 import { UserCreateInput } from 'src/users/types/input.type';
@@ -19,5 +20,9 @@ export class UsersService {
       }
       throw error;
     }
+  }
+
+  findByEmail(email: string): Promise<User | null> {
+    return this.prisma.user.findUnique({ where: { email } });
   }
 }
